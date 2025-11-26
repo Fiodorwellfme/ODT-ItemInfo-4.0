@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using System.Text;
 using ItemInfo.Models;
-using Microsoft.AspNetCore.Mvc.Formatters.Xml;
 using SPTarkov.Server.Core.Models.Common;
 using SPTarkov.Server.Core.Models.Eft.Common.Tables;
 using SPTarkov.Server.Core.Models.Eft.Hideout;
@@ -237,6 +236,14 @@ public static class Utils
 				                                          localeData[itemId + " " + type] + 
 				                                          addToName[^12..];
 				    break;
+			    case "wrapShortName":
+				    localeData[itemId + " " + type] = addToName[..^8] + 
+				                                      localeData[itemId + " " + type] + 
+				                                      addToName[^8..];
+				    _locales[lang][itemId + " " + type] = addToName[..^8] + 
+				                                          localeData[itemId + " " + type] + 
+				                                          addToName[^8..];
+				    break;
 			    default:
 				    localeData[itemId + " " + type] = _locales[lang][itemId + " " + type];
 				    break;
@@ -396,6 +403,28 @@ public static class Utils
 			    "wrap",
 			    itemId,
 			    "<b><color=" + tiersHexCode + "></color></b>",
+			    "");
+	    }
+    }
+    
+    public static void AddColorToShortName(string itemId, string tiersHexCode, string lang = "")
+    {
+	    if (lang == "")
+	    {
+		    foreach (var locale in _serverSupportedLocale)
+		    {
+			    if (_locales.ContainsKey(locale))
+				    AddColorToShortName(itemId, tiersHexCode, locale);
+		    }
+	    }
+	    else
+	    {
+		    AddLocaleTransformer(_lazyloadList,
+			    lang,
+			    "ShortName",
+			    "wrapShortName",
+			    itemId,
+			    "<color=" + tiersHexCode + "></color>",
 			    "");
 	    }
     }
