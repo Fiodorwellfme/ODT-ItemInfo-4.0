@@ -385,8 +385,8 @@ public class ItemInfo(
 		    Items = Items.Select(kvp => new CachedItemInfoPatch
 		    {
 			    Id = kvp.Key.ToString(),
-			    Name = Localization.GetValueOrDefault(kvp.Key + " Name"),
-			    ShortName = Localization.GetValueOrDefault(kvp.Key + " ShortName"),
+			    Name = Utils.GetItemName(kvp.Key, UserLocale),
+			    ShortName = Utils.GetItemShortName(kvp.Key, UserLocale),
 			    DescriptionPrefix = BuildDescriptionPrefix(kvp.Key),
 			    BackgroundColor = kvp.Value.Properties?.BackgroundColor
 		    }).ToList()
